@@ -5,7 +5,7 @@ android {
     buildToolsVersion '22.0.1'
 
     defaultConfig {
-        applicationId "apps.fdiazreal.com.farenheit"
+        applicationId "apps.fdiazreal.com.wetter"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
