@@ -1,13 +1,19 @@
 package apps.fdiazreal.com.wetter;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class WetterMainActivity extends ActionBarActivity {
+
+    private static final String LOG_TAG = WetterMainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +41,33 @@ public class WetterMainActivity extends ActionBarActivity {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
             return true;
+        }  else if (R.id.action_show_map == id){
+            launchMap();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void launchMap() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String location = sharedPreferences.getString(
+                getString(R.string.pref_location_key),
+                getString(R.string.default_location));
+
+        Uri geoURI = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+
+        Log.v(LOG_TAG, "Creating geo intent with URI <" + geoURI.toString() + ">");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoURI);
+
+        if(mapIntent.resolveActivity(getPackageManager()) != null){
+            startActivity(mapIntent);
+        } else {
+            Log.e(LOG_TAG, "Couldnt start map activity!");
+        }
+    }
+
 }

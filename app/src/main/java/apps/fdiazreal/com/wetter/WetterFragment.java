@@ -40,8 +40,7 @@ public class WetterFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastsAdapter;
 
-    public WetterFragment() {
-    }
+    public WetterFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState){
