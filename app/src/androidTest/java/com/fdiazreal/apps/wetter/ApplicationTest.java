@@ -1,4 +1,4 @@
-package apps.fdiazreal.com.wetter;
+package com.fdiazreal.apps.wetter;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

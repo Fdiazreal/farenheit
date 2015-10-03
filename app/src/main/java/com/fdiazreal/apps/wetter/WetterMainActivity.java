@@ -1,4 +1,4 @@
-package apps.fdiazreal.com.wetter;
+package com.fdiazreal.apps.wetter;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -60,7 +60,6 @@ public class WetterMainActivity extends ActionBarActivity {
                 .appendQueryParameter("q", location)
                 .build();
 
-        Log.v(LOG_TAG, "Creating geo intent with URI <" + geoURI.toString() + ">");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoURI);
 
         if(mapIntent.resolveActivity(getPackageManager()) != null){

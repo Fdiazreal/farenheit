@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="apps.fdiazreal.com.wetter" >
+    package="com.fdiazreal.apps.wetter" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".WetterMainActivity"
+            android:name="com.fdiazreal.apps.wetter.WetterMainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,20 +19,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name="com.fdiazreal.apps.wetter.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName="apps.fdiazreal.com.wetter.WetterMainActivity">
+            android:parentActivityName="com.fdiazreal.apps.wetter.WetterMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="WetterMainActivity" />
+                android:value="com.fdiazreal.apps.wetter.WetterMainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.fdiazreal.apps.wetter.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="apps.fdiazreal.com.wetter.WetterMainActivity">
+            android:parentActivityName="com.fdiazreal.apps.wetter.WetterMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="WetterMainActivity" />
+                android:value="com.fdiazreal.apps.wetter.WetterMainActivity" />
         </activity>
     </application>
 
