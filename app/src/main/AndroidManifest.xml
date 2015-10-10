@@ -36,7 +36,7 @@
         </activity>
         <provider
             android:authorities="com.fdiazreal.apps.wetter"
-            android:name="com.fdiazreal.apps.wetter.data.WeatherProvider" />
+            android:name=".data.WeatherProvider" />
     </application>
 
 </manifest>
