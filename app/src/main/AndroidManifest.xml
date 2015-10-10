@@ -34,6 +34,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fdiazreal.apps.wetter.WetterMainActivity" />
         </activity>
+        <provider
+            android:authorities="com.fdiazreal.apps.wetter"
+            android:name="com.fdiazreal.apps.wetter.data.WeatherProvider" />
     </application>
 
 </manifest>
