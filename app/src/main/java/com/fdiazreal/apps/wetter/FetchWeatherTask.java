@@ -1,8 +1,10 @@
 package com.fdiazreal.apps.wetter;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -10,7 +12,9 @@ import android.text.format.Time;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.fdiazreal.apps.wetter.data.WeatherContract;
 import com.fdiazreal.apps.wetter.data.WeatherContract.WeatherEntry;
+import com.fdiazreal.apps.wetter.data.WeatherProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,7 +98,36 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         // Students: First, check if the location with this city name exists in the db
         // If it exists, return the current ID
         // Otherwise, insert it using the content resolver and the base URI
-        return -1;
+        Cursor queryCursor = mContext.getContentResolver().query(
+                WeatherContract.LocationEntry.CONTENT_URI,
+                new String[]{WeatherContract.LocationEntry._ID},
+                WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
+                new String[]{locationSetting},
+                null);
+
+        long rowId;
+
+        if(queryCursor.moveToFirst()){
+            int columnIndex = queryCursor.getColumnIndex(WeatherContract.LocationEntry._ID);
+            rowId = queryCursor.getLong(columnIndex);
+        } else {
+            ContentValues newLocation = new ContentValues();
+            newLocation.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+            newLocation.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
+            newLocation.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
+            newLocation.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
+
+            Uri newLocationUri = mContext.getContentResolver().insert(
+                    WeatherContract.LocationEntry.CONTENT_URI,
+                    newLocation
+            );
+
+            rowId = ContentUris.parseId(newLocationUri);
+        }
+
+        queryCursor.close();
+
+        return rowId;
     }
 
     /*
@@ -304,6 +337,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         String format = "json";
         String units = "metric";
         int numDays = 14;
+        // What to do with this hardcoded API Key? Can it be hided from the sun?
+        String appId = "1c688dc4bd39a8764f0effe79998d337";
 
         try {
             // Construct the URL for the OpenWeatherMap query
@@ -315,12 +350,15 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             final String FORMAT_PARAM = "mode";
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
+            final String APP_ID = "APPID";
+
 
             Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, params[0])
                     .appendQueryParameter(FORMAT_PARAM, format)
                     .appendQueryParameter(UNITS_PARAM, units)
                     .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                    .appendQueryParameter(APP_ID, appId)
                     .build();
 
             URL url = new URL(builtUri.toString());
